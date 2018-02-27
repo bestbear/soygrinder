@@ -1,0 +1,73 @@
+# AWS Build Specification
+
+version: 0.2
+
+env:
+  variables:
+    # The following build variables are ONLY used during the application TEST phase.  During a Pull Request,
+    # AWS CodeBuild creates a Docker container that contains a temporary test database for running unit tests.
+    # That container requires the environment variables listed below to populate the configuration variables
+    # contained in `database.yml`.
+    RAILS_ENV: "test"
+    DB_HOST: "localhost"
+    DB_NAME: agrium_cps_test
+    DB_USER: cps_api_test
+    DB_PASSWORD: "this-is-a-temporary-password-and-is-not-sensitive"
+
+    # Additional build variables
+    # TODO: Change Reporter ID // Automate generation + embed using TF or similar
+    CC_TEST_REPORTER_ID: "b90d504dae4bf77abd0cbba03821726d9c6ba9a0bfbcb86fc069d22647246884"
+
+# Define the commands that occur at each phase of the automated build process. This maps directly to the
+# phases within the AWS CodeBuild console.  See
+# https://us-east-2.console.aws.amazon.com/codebuild/home?region=us-east-2#/projects
+phases:
+  # The INSTALL phase installs Ruby, Postgres within a Docker containers, and the Code Climate Test Reporter
+  # to report info about the CI builds to Code Climate (see https://github.com/codeclimate/test-reporter).
+  install:
+    commands:
+      - echo Entered the INSTALL phase...
+      - APP_DIR=`pwd`
+      - WORKDIR=/tmp/cc
+
+      - echo Installing Ruby v2.4.2 from source...
+      - wget http://ftp.ruby-lang.org/pub/ruby/2.4/ruby-2.4.2.tar.gz
+      - tar -xzvf ruby-2.4.2.tar.gz
+      - cd ruby-2.4.2/
+      - ./configure
+      - make
+      - sudo make install
+      - gem install bundler
+
+      - echo Installing Postgres database in a Docker container...
+      - docker pull postgres
+      - docker run --name test-postgres -p 5432:5432 -e POSTGRES_USER=$DB_USER -e POSTGRES_PASSWORD=$DB_PASSWORD -e POSTGRES_DB=$DB_NAME -d postgres
+
+      - echo Installing Code Climate Test Reporter...
+      - mkdir -p "$WORKDIR"
+      - cd "$WORKDIR"
+      - wget -O cc-test-reporter "https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64"
+      - chmod a+x cc-test-reporter
+
+  # The BUILD phase installs Ruby gems
+  build:
+    commands:
+      - echo Entered the BUILD phase...
+      - echo Build started on `date`
+      - cd $APP_DIR
+      - bundle install --deployment
+
+  # The POST BUILD phase runs application tasks, such as database migrations and automated unit tests.
+  post_build:
+    commands:
+      - echo Entered the POST BUILD phase...
+      - bundle exec rake db:migrate
+      - bundle exec rake
+      - echo Build completed on `date`
+
+# Define which artifacts from the initial build are stored within the artifact that is passed through the
+# AWS CodePipeline during subsequent environment promotions.
+artifacts:
+  files:
+    - '**/*'
+
