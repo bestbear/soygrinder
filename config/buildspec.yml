@@ -43,11 +43,11 @@ phases:
       - docker pull postgres
       - docker run --name test-postgres -p 5432:5432 -e POSTGRES_USER=$DB_USER -e POSTGRES_PASSWORD=$DB_PASSWORD -e POSTGRES_DB=$DB_NAME -d postgres
 
-      - echo Installing Code Climate Test Reporter...
-      - mkdir -p "$WORKDIR"
-      - cd "$WORKDIR"
-      - wget -O cc-test-reporter "https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64"
-      - chmod a+x cc-test-reporter
+        #    - echo Installing Code Climate Test Reporter...
+        #    - mkdir -p "$WORKDIR"
+        #   - cd "$WORKDIR"
+        #   - wget -O cc-test-reporter "https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64"
+        #    - chmod a+x cc-test-reporter
 
   # The BUILD phase installs Ruby gems
   build:
@@ -61,6 +61,7 @@ phases:
   post_build:
     commands:
       - echo Entered the POST BUILD phase...
+      - cd $APP_DIR
       - bundle exec rake db:migrate
       - bundle exec rake
       - echo Build completed on `date`
