@@ -61,7 +61,8 @@ phases:
   post_build:
     commands:
       - echo Entered the POST BUILD phase...
-      - cd $APP_DIR
+      - cd .. 
+      - pwd
       - bundle exec rake db:migrate
       - bundle exec rake
       - echo Build completed on `date`
