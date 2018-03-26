@@ -13,6 +13,7 @@ env:
     DB_NAME: agrium_cps_test
     DB_USER: cps_api_test
     DB_PASSWORD: "this-is-a-temporary-password-and-is-not-sensitive"
+    BUNDLE_GEMFILE: "gems/rake-12.0.0/Gemfile"
 
     # Additional build variables
     # TODO: Change Reporter ID // Automate generation + embed using TF or similar
@@ -34,11 +35,13 @@ phases:
       - wget http://ftp.ruby-lang.org/pub/ruby/2.4/ruby-2.4.2.tar.gz
       - tar -xzvf ruby-2.4.2.tar.gz
       - cd ruby-2.4.2/
+# ./configure --prefix /Users/mark.cwetna/mywork/docker/ruby-2.4.2/install       
       - ./configure
       - make
       - sudo make install
       - gem install bundler
-
+# see where gem installs its packages
+# gem environment
       - echo Installing Postgres database in a Docker container...
       - docker pull postgres
       - docker run --name test-postgres -p 5432:5432 -e POSTGRES_USER=$DB_USER -e POSTGRES_PASSWORD=$DB_PASSWORD -e POSTGRES_DB=$DB_NAME -d postgres
