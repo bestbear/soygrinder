@@ -13,7 +13,7 @@ env:
     DB_NAME: agrium_cps_test
     DB_USER: cps_api_test
     DB_PASSWORD: "this-is-a-temporary-password-and-is-not-sensitive"
-    BUNDLE_GEMFILE: "gems/rake-12.0.0/Gemfile"
+#    BUNDLE_GEMFILE: "gems/rake-12.0.0/Gemfile"
 
     # Additional build variables
     # TODO: Change Reporter ID // Automate generation + embed using TF or similar

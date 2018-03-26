@@ -125,6 +125,10 @@ group :development do
   gem 'spring'                      # Rails application pre-loader that speeds development by keeping
                                     # application running in the background: https://github.com/rails/spring
   gem 'spring-watcher-listen', '~> 2.0.0'  # Spring listener
+  gem 'activerecord', '4.2.5'
+  gem 'rake'
+  gem 'thin'
+  gem 'require_all'
 end
 
 
