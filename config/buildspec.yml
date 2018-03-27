@@ -58,7 +58,7 @@ phases:
       - echo Entered the BUILD phase...
       - echo Build started on `date`
       - cd $APP_DIR
-      - bundle install --deployment
+#      - bundle install --deployment
 
   # The POST BUILD phase runs application tasks, such as database migrations and automated unit tests.
   post_build:
