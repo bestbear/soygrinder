@@ -64,10 +64,8 @@ phases:
   post_build:
     commands:
       - echo Entered the POST BUILD phase...
-      - cd .. 
-      - pwd
-      - bundle exec rake db:migrate
-      - bundle exec rake
+#      - bundle exec rake db:migrate
+#      - bundle exec rake
       - echo Build completed on `date`
 
 # Define which artifacts from the initial build are stored within the artifact that is passed through the
