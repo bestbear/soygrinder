@@ -1,0 +1,15 @@
+{
+  "containerDefinitions": [
+{
+"name": "web-tier",
+"image": "amui/web-test:v2",
+"cpu": 256, "memory": 256, "entryPoint": [], "environment": [], "command": [], "portMappings": [
+  {
+    "hostPort": 8000,
+    "containerPort": 8000,
+    "protocol": "tcp"
+} ],
+      "essential": true
+    }
+],
+"family": "web-tier" }

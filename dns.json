@@ -1,0 +1,17 @@
+{
+  "Comment": "Update alias record to route
+traffic from Blue to Green ELB for Dice Demo
+ECS Service",
+  "Changes": [
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "demo.example.com",
+        "Type": "A",
+        "AliasTarget": {
+          "HostedZoneId": ”Zxxxxxxxxxxxx",
+          "DNSName": "dice-demo-green-
+1234567890.us-west-2.elb.amazonaws.com",
+...
+  "EvaluateTargetHealth": false
+}
