@@ -2,7 +2,7 @@
 - hosts: localhost
   sudo: yes
   vars:
-    http_port: 80
+    http_port: 8080
     domain: localhost
   tasks:
     - name: install apache2
