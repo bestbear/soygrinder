@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage('Build') {
 	environment {
-  // No environment variables specified
-}
+	CC = 'gcc'
+	}
             steps {
                 echo 'Building..'
             }
